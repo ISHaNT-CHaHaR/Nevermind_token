@@ -13,8 +13,4 @@ contract Token {
         totalSupply = _initialSupply;
     }
 
-    
-
-
-
 }
