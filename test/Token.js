@@ -20,7 +20,7 @@ contract('Token', (accounts) => {
    });
 });
 
-contract('Token', (accounts) => {
+contract('Token', () => {
    it('must have same name', async () => {
       const token = await Token.deployed();
       let name = await token.name();
@@ -42,5 +42,19 @@ contract('Token', (accounts) => {
       const token = await Token.deployed();
       let i = await token.totalSupply();
       assert(i.toNumber() === 1000000);
+   });
+});
+
+contract('Token', (accounts) => {
+   it('must pass approval', async () => {
+      const token = await Token.deployed();
+      let flag = await token.approve.call(accounts[1], 8);
+
+      await token.approve(accounts[1], 10, { from: accounts[0] });
+
+      let allowance = await token.allowance(accounts[0], accounts[1]);
+
+      assert.equal(allowance.toNumber(), 10);
+      assert.equal(flag, true, 'must return true');
    });
 });
