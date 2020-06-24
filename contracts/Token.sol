@@ -37,6 +37,9 @@ contract Token {
         return true;
     }
 
+    function approve(address _spender,  uint _value) public returns(bool success){
+        
+    }
 
         
 
