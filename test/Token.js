@@ -16,7 +16,6 @@ contract('Token', (accounts) => {
       let balance = await token.balanceof(accounts[1]);
       let remain = await token.balanceof(accounts[0]);
       assert.equal(balance.toNumber(), 1);
-      console.log(remain.toNumber());
    });
 });
 
@@ -56,5 +55,25 @@ contract('Token', (accounts) => {
 
       assert.equal(allowance.toNumber(), 10);
       assert.equal(flag, true, 'must return true');
+   });
+
+   it('delegate Transfers', async () => {
+      const token = await Token.deployed();
+      let fromAccount = accounts[2];
+      let toAccount = accounts[3];
+      let spendingAccount = accounts[4];
+      await token.transfer(fromAccount, 1000, { from: accounts[0] });
+      await token.approve(spendingAccount, 1000, { from: fromAccount });
+      await token.transferFrom(fromAccount, toAccount, 1000, {
+         from: spendingAccount,
+      });
+
+      let balance1 = await token.balanceof(fromAccount);
+
+      assert.equal(balance1.toNumber(), 0);
+
+      let balance2 = await token.balanceof(toAccount);
+
+      assert.equal(balance2.toNumber(), 1000);
    });
 });

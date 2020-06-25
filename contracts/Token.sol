@@ -53,4 +53,21 @@ contract Token {
         emit Approve(msg.sender, _spender, _value);
         return true;
     }
+
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _value
+    ) public returns (bool success) {
+        require(balanceof[_from] >= _value, "Insufficient Balance");
+        require(allowance[_from][msg.sender] >= _value, "Insufficient Balance");
+
+        balanceof[_from] -= _value;
+        balanceof[_to] += _value;
+
+        allowance[_from][msg.sender] -= _value;
+
+        emit Transfer(_from, _to, _value);
+        return true;
+    }
 }
