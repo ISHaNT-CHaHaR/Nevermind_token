@@ -4,7 +4,7 @@ contract('Token', (accounts) => {
    it('must pass balance', async () => {
       const token = await Token.deployed();
       let adminBalance = await token.balanceof(accounts[0]);
-
+ 
       console.log(await token.name());
       console.log(await token.symbol());
       let total = await token.totalSupply();
