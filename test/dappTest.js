@@ -4,7 +4,8 @@ contract('dappToken', (accounts) => {
    let TokenPrice = 1000000000000000;
    let buyer = accounts[1];
    let admin = accounts[0];
-   let tokenAvailable = 75000;
+   let tokenAvailable = 750000;
+   let number = 10;
 
    it('initializes the contract', async () => {
       const tokensale = await dappToken.deployed();
@@ -24,7 +25,6 @@ contract('dappToken', (accounts) => {
       const tokensale = await dappToken.deployed();
 
       await token.transfer(tokensale.address, tokenAvailable, { from: admin });
-      let number = 10;
 
       await tokensale.buyTokens(number, {
          from: buyer,
@@ -32,11 +32,27 @@ contract('dappToken', (accounts) => {
       });
       let amount = await tokensale.tokenSold();
       assert.equal(amount.toNumber(), number);
-
+     
       let balance = await token.balanceof(buyer);
       assert.equal(balance.toNumber(), number);
-
+     
       let balanceSale = await token.balanceof(tokensale.address);
       assert.equal(balanceSale.toNumber(), tokenAvailable - number);
+     
+   });
+
+   it('endsTokenSale', async () => {
+      const token = await Token.deployed();
+      const tokensale = await dappToken.deployed();
+
+      
+
+      await tokensale.endSale({ from: admin });
+
+      const remain = await token.balanceof(admin);
+      
+      const total = await token.totalSupply();
+      const final = total.toNumber() - number;
+      assert.equal(remain.toNumber(), final);
    });
 });
