@@ -42,4 +42,20 @@ contract dappToken {
         tokenSold += _numberOfTokens;
         emit Sell(msg.sender, _numberOfTokens);
     }
+
+    function endSale() public payable {
+        // require admin
+        require(msg.sender == admin, "Sale must end by admin only");
+        // transfer remaining tokens to admin.
+        require(
+            tokenContract.transfer(
+                admin,
+                tokenContract.balanceof(address(this))
+            ),
+            "transferred remains back to admin!"
+        );
+        // destroy contract
+
+        
+    }
 }
