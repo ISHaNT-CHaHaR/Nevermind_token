@@ -3,7 +3,7 @@ pragma solidity >=0.4.21 <0.7.0;
 import "./Token.sol";
 
 contract dappToken {
-    address admin; // admin assigned
+    address payable admin; // admin assigned
 
     uint256 public tokenPrice;
 
@@ -56,6 +56,6 @@ contract dappToken {
         );
         // destroy contract
 
-        
+        selfdestruct(admin);
     }
 }
